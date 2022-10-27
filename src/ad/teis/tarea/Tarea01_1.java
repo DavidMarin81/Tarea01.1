@@ -7,6 +7,7 @@ package ad.teis.tarea;
 import ad.teis.model.Persona;
 import ad.teis.persistencia.DataIOPersistencia;
 import ad.teis.persistencia.IPersistencia;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -23,7 +24,15 @@ public class Tarea01_1 {
             "destino.dat.");
 
     private static ArrayList<Persona> filtrarPersonas(ArrayList<Persona> personas) {
-        //implementa método
+        for(Persona p : personas){
+            if (p.isBorrado()){
+                System.out.println("si se borro");
+            } else {
+                System.out.println("no se borro");
+            }
+        }
+        
+        return personas;
     }
 
     private static void cribarBorrados() {
@@ -34,14 +43,16 @@ public class Tarea01_1 {
         personas = diop.leerTodo(PERSONAS_ORIGEN_PATH.toString());
 
         //Completa el método
-        filtrarPersonas(personas);
+        personas = filtrarPersonas(personas);
+        
+        DataIOPersistencia dao = new DataIOPersistencia();
+        dao.escribirPersonas(personas, Tarea01_1.PERSONAS_DESTINO_PATH.toString());
+        
+        for (Persona p : personas) {
+            System.out.println(p);
+        }
+        
     
-
-    
-        ...
-            
-
-
 }
 
 /**
