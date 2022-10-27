@@ -24,15 +24,14 @@ public class Tarea01_1 {
             "destino.dat.");
 
     private static ArrayList<Persona> filtrarPersonas(ArrayList<Persona> personas) {
+        ArrayList<Persona> personasFiltradas = new ArrayList<>();
         for(Persona p : personas){
-            if (p.isBorrado()){
-                System.out.println("si se borro");
-            } else {
-                System.out.println("no se borro");
+            if(p.isBorrado()){
+                personasFiltradas.add(p);
             }
         }
         
-        return personas;
+        return personasFiltradas;
     }
 
     private static void cribarBorrados() {
@@ -40,7 +39,7 @@ public class Tarea01_1 {
 
         IPersistencia diop = new DataIOPersistencia();
 
-        personas = diop.leerTodo(PERSONAS_ORIGEN_PATH.toString());
+        personas = diop.leerTodo(Tarea01_1.PERSONAS_ORIGEN_PATH.toString());
 
         //Completa el método
         personas = filtrarPersonas(personas);
@@ -48,11 +47,6 @@ public class Tarea01_1 {
         DataIOPersistencia dao = new DataIOPersistencia();
         dao.escribirPersonas(personas, Tarea01_1.PERSONAS_DESTINO_PATH.toString());
         
-        for (Persona p : personas) {
-            System.out.println(p);
-        }
-        
-    
 }
 
 /**
