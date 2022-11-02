@@ -26,7 +26,7 @@ public class Tarea01_1 {
     private static ArrayList<Persona> filtrarPersonas(ArrayList<Persona> personas) {
         ArrayList<Persona> personasFiltradas = new ArrayList<>();
         for(Persona p : personas){
-            if(p.isBorrado()){
+            if(!p.isBorrado()){
                 personasFiltradas.add(p);
             }
         }
@@ -45,6 +45,9 @@ public class Tarea01_1 {
         personas = filtrarPersonas(personas);
         
         DataIOPersistencia dao = new DataIOPersistencia();
+        
+        //David: se comprueba si el fichero existe
+        
         dao.escribirPersonas(personas, Tarea01_1.PERSONAS_DESTINO_PATH.toString());
         
 }
