@@ -25,7 +25,7 @@ public class DataIOPersistencia implements IPersistencia {
 
     public void escribirPersonas(ArrayList<Persona> personas, String ruta) {
         try (
-                //Poner el true para evitar que sobreescriba
+                //Hay que poner el parametro "true" en FileOutputStream para evitar que se sobreescriba el archivo
                  FileOutputStream fos = new FileOutputStream(ruta);  DataOutputStream dos = new DataOutputStream(fos);) {
             for (Persona persona : personas) {
                 dos.writeLong(persona.getId());
@@ -86,8 +86,9 @@ public class DataIOPersistencia implements IPersistencia {
             } while (true);
             
         }catch(EOFException ex) {
+            //Si se llega a esta excepción, se aprovecha que salta para salir y terminar el bucle
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(DataIOPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Fichero de origen no encontrado");
         } catch (IOException ex) {
             Logger.getLogger(DataIOPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
