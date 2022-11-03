@@ -7,7 +7,6 @@ package ad.teis.tarea;
 import ad.teis.model.Persona;
 import ad.teis.persistencia.DataIOPersistencia;
 import ad.teis.persistencia.IPersistencia;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author mfernandez
+ * @author david_marin
  */
 public class Tarea01_1 {
 
@@ -35,23 +34,28 @@ public class Tarea01_1 {
                 personasFiltradas.add(p);
             }
         }
-
         return personasFiltradas;
     }
 
     private static void cribarBorrados() {
         ArrayList<Persona> personas = new ArrayList<>();
-        File ficheroOrigen = new File(PERSONAS_ORIGEN_PATH.toString());
-        File ficheroDestino = new File(PERSONAS_DESTINO_PATH.toString());
 
         IPersistencia diop = new DataIOPersistencia();
-
-        if (ficheroOrigen.exists()) {
+        // Si el fichero ya existía en el destino, deberá borrarse previamente a la creación del fichero
+        if(Files.exists(PERSONAS_DESTINO_PATH)){
+            try {
+                Files.delete(PERSONAS_DESTINO_PATH);
+            } catch (IOException ex) {
+                Logger.getLogger(Tarea01_1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if (Files.exists(PERSONAS_ORIGEN_PATH)) {
             personas = diop.leerTodo(PERSONAS_ORIGEN_PATH.toString());
         } else {
             try {
                 System.out.println("El fichero de origen no existe. Se procede a su creado.");
-                ficheroOrigen.createNewFile();
+                Files.createFile(PERSONAS_ORIGEN_PATH);
                 personas = diop.leerTodo(PERSONAS_ORIGEN_PATH.toString());
             } catch (IOException ex) {
                 System.out.println("No se ha podido crear el fichero");
@@ -64,19 +68,12 @@ public class Tarea01_1 {
         DataIOPersistencia dao = new DataIOPersistencia();
 
         //Se comprueba si el fichero existe
-        if (ficheroDestino.exists()) {
-            //Si el fichero ya existía en el destino, deberá borrarse previamente a la creación del fichero.
-            try {
-                ficheroDestino.delete();
-                ficheroDestino.createNewFile();
+        if (Files.exists(PERSONAS_DESTINO_PATH)) {
                 dao.escribirPersonas(personas, Tarea01_1.PERSONAS_DESTINO_PATH.toString());
-            } catch (IOException ex) {
-                System.out.println("No se ha podido crear el fichero");
-            }
         } else {
             try {
                 System.out.println("El fichero no existe. Se procede a su creado.");
-                ficheroDestino.createNewFile();
+                Files.createFile(PERSONAS_DESTINO_PATH);
                 dao.escribirPersonas(personas, Tarea01_1.PERSONAS_DESTINO_PATH.toString());
             } catch (IOException ex) {
                 System.out.println("No se ha podido crear el fichero");
